@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.StartSceneController">
+   <children>
+      <ImageView fitHeight="408.0" fitWidth="314.0" layoutX="-5.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="https://cdn.discordapp.com/attachments/218798201191268352/831977271341350992/julu.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="-3.0" layoutY="122.0" prefHeight="50.0" prefWidth="306.0" text="JULU METER">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Button fx:id="startButton" layoutX="87.0" layoutY="211.0" mnemonicParsing="false" onAction="#start" prefHeight="103.0" prefWidth="126.0" text="START" />
+   </children>
+</AnchorPane>
