@@ -1,17 +1,30 @@
 package Controllers;
 
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 
 public class JuluMeterSceneController {
 
@@ -22,7 +35,18 @@ public class JuluMeterSceneController {
     private TextField naamField;
 
     @FXML
+    private Label juluLoadingLabel;
+
+    @FXML
+    private AnchorPane juluPlaatje;
+    
+    @FXML
+    private AnchorPane juluPane;
+    
+    @FXML
     public void initialize() {
+        juluLoadingLabel.setVisible(false);
+        juluAnimatie();
         naamField.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 try {
@@ -46,8 +70,7 @@ public class JuluMeterSceneController {
         controller.initNaam(naamField.getText());
         controller.initResultaat(resultaat);
         controller.initialize(naamField.getText(), resultaat);
-        stage.show();
-
+        juluLoadingLabel.setVisible(true);
         Stage prevStage = (Stage) berekenJuluButton.getScene().getWindow();
         prevStage.hide();
     }
@@ -56,4 +79,44 @@ public class JuluMeterSceneController {
     public int juluCalculator() {
         return (int) (Math.random()*100);
     }
-}
+
+    public void juluAnimatie() {
+        Image superJulu = new Image(getClass().getResourceAsStream("/superjulu.jpeg"));
+        Circle juluCirkel = new Circle(35, Color.BLUE);
+        juluCirkel.setFill(new ImagePattern(superJulu));
+
+            juluCirkel.relocate(100, 100);
+
+            juluPane.getChildren().addAll(juluCirkel);
+
+            final Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+
+                double deltaX = 3;
+                double deltaY = 3;
+
+                @Override
+                public void handle(final ActionEvent t) {
+                    juluCirkel.setLayoutX(juluCirkel.getLayoutX() + deltaX);
+                    juluCirkel.setLayoutY(juluCirkel.getLayoutY() + deltaY);
+
+                    final Bounds bounds = juluPane.getBoundsInLocal();
+                    final boolean atRightBorder = juluCirkel.getLayoutX() >= (bounds.getMaxX() - juluCirkel.getRadius());
+                    final boolean atLeftBorder = juluCirkel.getLayoutX() <= (bounds.getMinX() + juluCirkel.getRadius());
+                    final boolean atBottomBorder = juluCirkel.getLayoutY() >= (bounds.getMaxY() - juluCirkel.getRadius());
+                    final boolean atTopBorder = juluCirkel.getLayoutY() <= (bounds.getMinY() + juluCirkel.getRadius());
+
+                    if (atRightBorder || atLeftBorder) {
+                        deltaX *= -1;
+                    }
+                    if (atBottomBorder || atTopBorder) {
+                        deltaY *= -1;
+                    }
+                }
+            }));
+
+            loop.setCycleCount(Timeline.INDEFINITE);
+            loop.play();
+        }
+
+    }
+

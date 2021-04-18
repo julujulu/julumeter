@@ -3,8 +3,6 @@ package Controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import javafx.animation.PauseTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+
 
 public class JuluResultaatSceneController {
 
@@ -66,20 +64,20 @@ public class JuluResultaatSceneController {
         }
         else if (resultaat >= 85) {
             juluAchtergrond.setImage(superJulu);
-            juluPercentageLabel.setText(String.valueOf(resultaat) + "% HODEE " + naam.toUpperCase() + " IS KAOLO JULU");
+            juluPercentageLabel.setText(resultaat + "% HODEE " + naam.toUpperCase() + " IS KAOLO JULU");
         }
         else if (resultaat <= 15) {
             juluAchtergrond.setImage(gigachad);
-            juluPercentageLabel.setText(String.valueOf(resultaat) + "% " + naam.toUpperCase() + " HEEFT WALOU JULU");
+            juluPercentageLabel.setText(resultaat + "% " + naam.toUpperCase() + " HEEFT WALOU JULU");
             juluPercentageLabel.setTextFill(Color.web("#FFFFFF"));
         }
         else {
             juluAchtergrond.setImage(julu);
-        juluPercentageLabel.setText(naam.toUpperCase() + " IS " + String.valueOf(resultaat) + "% JULU");
+        juluPercentageLabel.setText(naam.toUpperCase() + " IS " + resultaat + "% JULU");
         }
 
     }
-    public void opnieuw(ActionEvent actionEvent) throws IOException {
+    public void opnieuw() throws IOException {
         if (naam.toLowerCase().trim().equals("julu")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("JULU OVERLOAD");
