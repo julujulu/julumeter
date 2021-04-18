@@ -38,15 +38,11 @@ public class JuluMeterSceneController {
     private Label juluLoadingLabel;
 
     @FXML
-    private AnchorPane juluPlaatje;
-    
-    @FXML
     private AnchorPane juluPane;
     
     @FXML
     public void initialize() {
         juluLoadingLabel.setVisible(false);
-        juluAnimatie();
         naamField.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 try {
@@ -58,6 +54,28 @@ public class JuluMeterSceneController {
         });
     }
     public void berekenJulu() throws IOException {
+        juluLoadingLabel.setVisible(true);
+        juluAnimatie();
+        PauseTransition pause = new PauseTransition(Duration.seconds((int) (Math.random() * 3 + 2)));
+        pause.setOnFinished(event ->
+        {
+            try {
+                juluWisselScene();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+);
+        pause.play();
+
+    }
+
+
+    public int juluCalculator() {
+        return (int) (Math.random()*100);
+    }
+
+    public void juluWisselScene() throws IOException {
         int resultaat = juluCalculator();
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/JuluResultaatScene.fxml");
@@ -66,23 +84,19 @@ public class JuluMeterSceneController {
         Stage stage = new Stage();
         stage.setTitle("JULU METER");
         stage.setScene(new Scene(root));
+
         JuluResultaatSceneController controller = loader.getController();
         controller.initNaam(naamField.getText());
         controller.initResultaat(resultaat);
         controller.initialize(naamField.getText(), resultaat);
-        juluLoadingLabel.setVisible(true);
+        stage.show();
         Stage prevStage = (Stage) berekenJuluButton.getScene().getWindow();
         prevStage.hide();
     }
 
-
-    public int juluCalculator() {
-        return (int) (Math.random()*100);
-    }
-
     public void juluAnimatie() {
         Image superJulu = new Image(getClass().getResourceAsStream("/superjulu.jpeg"));
-        Circle juluCirkel = new Circle(35, Color.BLUE);
+        Circle juluCirkel = new Circle(35);
         juluCirkel.setFill(new ImagePattern(superJulu));
 
             juluCirkel.relocate(100, 100);
@@ -90,7 +104,6 @@ public class JuluMeterSceneController {
             juluPane.getChildren().addAll(juluCirkel);
 
             final Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-
                 double deltaX = 3;
                 double deltaY = 3;
 
