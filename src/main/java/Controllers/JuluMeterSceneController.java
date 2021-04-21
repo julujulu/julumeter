@@ -1,8 +1,11 @@
 package Controllers;
 
 
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -11,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,15 +22,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
+
 public class JuluMeterSceneController {
+
+    private int resultaat;
+
+    private List<String> cheatCode = new ArrayList<>();
 
     @FXML
     private Button berekenJuluButton;
@@ -43,8 +52,9 @@ public class JuluMeterSceneController {
     @FXML
     public void initialize() {
         juluLoadingLabel.setVisible(false);
+        juluPane.addEventFilter(KeyEvent.KEY_PRESSED, this::cheatCodeFilter);
         naamField.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
+            if(event.getCode().equals(KeyCode.ENTER)) {
                 try {
                     berekenJulu();
                 } catch (IOException e) {
@@ -53,6 +63,7 @@ public class JuluMeterSceneController {
             }
         });
     }
+
     public void berekenJulu() throws IOException {
         juluLoadingLabel.setVisible(true);
         juluAnimatie();
@@ -76,7 +87,7 @@ public class JuluMeterSceneController {
     }
 
     public void juluWisselScene() throws IOException {
-        int resultaat = juluCalculator();
+        cheatCode.clear();
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/JuluResultaatScene.fxml");
         loader.setLocation(xmlUrl);
@@ -131,5 +142,26 @@ public class JuluMeterSceneController {
             loop.play();
         }
 
+
+    public void cheatCodeFilter(KeyEvent event) {
+        if (event.getCode().isArrowKey()) {
+            cheatCode.add(event.getCode().toString());
+            event.consume();
+        }
+
+        String cheatCodeString = "";
+        for (String s : cheatCode) {
+            cheatCodeString += s;
+        }
+        if (cheatCodeString.contains("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHT")) {
+            resultaat = 0;
+        }
+        else if (cheatCodeString.contains("DOWNDOWNUPUPRIGHTLEFTRIGHTLEFT")) {
+            resultaat = 99;
+        }
+        else {
+            resultaat = juluCalculator();
+        }
     }
+}
 
