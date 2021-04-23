@@ -8,7 +8,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.JuluResultaatSceneController">
     <children>
         <ImageView fx:id="juluAchtergrond" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="false"> </ImageView>
-        <Label fx:id="juluPercentageLabel" alignment="CENTER" layoutX="-3.0" layoutY="50.0" prefHeight="54.0" prefWidth="600.0">
+        <Label fx:id="juluPercentageLabel" alignment="CENTER" layoutX="-3.0" layoutY="30.0" prefHeight="112.0" prefWidth="600.0" textAlignment="CENTER" wrapText="true">
             <font>
                 <Font name="System Bold" size="28.0" />
             </font>

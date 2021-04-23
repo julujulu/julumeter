@@ -1,7 +1,6 @@
 package Controllers;
 
 
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,6 +34,8 @@ public class JuluMeterSceneController {
     private int resultaat;
 
     private List<String> cheatCode = new ArrayList<>();
+
+    private boolean pressed = false;
 
     @FXML
     private Button berekenJuluButton;
@@ -65,19 +65,24 @@ public class JuluMeterSceneController {
     }
 
     public void berekenJulu() throws IOException {
-        juluLoadingLabel.setVisible(true);
-        juluAnimatie();
-        PauseTransition pause = new PauseTransition(Duration.seconds((int) (Math.random() * 3 + 2)));
-        pause.setOnFinished(event ->
-        {
-            try {
-                juluWisselScene();
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (!pressed) {
+            pressed = true;
+            juluLoadingLabel.setVisible(true);
+            juluAnimatie();
+            PauseTransition pause = new PauseTransition(Duration.seconds((int) (Math.random() * 3 + 2)));
+            pause.setOnFinished(event ->
+            {
+                try {
+                    juluWisselScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+    );
+            pause.play(); }
+        else {
+            juluAnimatie();
         }
-);
-        pause.play();
 
     }
 
@@ -114,7 +119,7 @@ public class JuluMeterSceneController {
 
             juluPane.getChildren().addAll(juluCirkel);
 
-            final Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+            final Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<>() {
                 double deltaX = 3;
                 double deltaY = 3;
 
@@ -146,7 +151,6 @@ public class JuluMeterSceneController {
     public void cheatCodeFilter(KeyEvent event) {
         if (event.getCode().isArrowKey()) {
             cheatCode.add(event.getCode().toString());
-            event.consume();
         }
 
         String cheatCodeString = "";
